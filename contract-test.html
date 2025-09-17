@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.0/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <h1>Privacy Biometric Contract Test</h1>
+    <div id="results"></div>
+
+    <script>
+        const CONTRACT_ADDRESS = "0x349F5d8377683805206A56D692611b439B8CF916";
+        const CONTRACT_ABI = [
+            "function owner() view returns (address)",
+            "function totalUsers() view returns (uint256)",
+            "function getContractStats() view returns (uint256 _totalUsers, uint256 _totalAccessAttempts, uint256 _activeUsers)"
+        ];
+
+        async function testContract() {
+            const resultsDiv = document.getElementById('results');
+
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    resultsDiv.innerHTML = '<p style="color:red;">MetaMask not found</p>';
+                    return;
+                }
+
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+
+                resultsDiv.innerHTML = '<p>Testing contract connection...</p>';
+
+                // Test basic contract calls
+                const owner = await contract.owner();
+                const totalUsers = await contract.totalUsers();
+                const stats = await contract.getContractStats();
+
+                resultsDiv.innerHTML = `
+                    <h3>✅ Contract Connection Successful!</h3>
+                    <p><strong>Contract Address:</strong> ${CONTRACT_ADDRESS}</p>
+                    <p><strong>Owner:</strong> ${owner}</p>
+                    <p><strong>Total Users:</strong> ${totalUsers.toString()}</p>
+                    <p><strong>Stats:</strong> Users: ${stats[0].toString()}, Attempts: ${stats[1].toString()}, Active: ${stats[2].toString()}</p>
+                `;
+
+            } catch (error) {
+                console.error('Contract test error:', error);
+                resultsDiv.innerHTML = `
+                    <h3>❌ Contract Test Failed</h3>
+                    <p style="color:red;"><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Contract Address:</strong> ${CONTRACT_ADDRESS}</p>
+                    <p><strong>Network:</strong> Make sure you're connected to Sepolia testnet</p>
+                `;
+            }
+        }
+
+        // Auto-run test when page loads
+        window.addEventListener('load', testContract);
+    </script>
+</body>
+</html>

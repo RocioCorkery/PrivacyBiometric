@@ -1,0 +1,39 @@
+{
+  "name": "privacy-biometric-system",
+  "version": "1.0.0",
+  "description": "Privacy-preserving biometric authentication system using Zama FHE",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
+    "test": "npx hardhat test",
+    "node": "npx hardhat node",
+    "interact": "node scripts/interact.js",
+    "lint": "solhint 'contracts/**/*.sol'",
+    "format": "prettier --write 'contracts/**/*.sol' 'scripts/**/*.js' 'test/**/*.js'"
+  },
+  "keywords": [
+    "biometric",
+    "privacy",
+    "zama",
+    "fhe",
+    "blockchain",
+    "authentication",
+    "confidential"
+  ],
+  "author": "Privacy Biometric Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@fhevm/solidity": "^0.2.0",
+    "hardhat": "^2.19.0",
+    "solhint": "^4.0.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-solidity": "^1.1.0"
+  },
+  "dependencies": {
+    "ethers": "^6.8.0",
+    "dotenv": "^16.3.0"
+  }
+}
